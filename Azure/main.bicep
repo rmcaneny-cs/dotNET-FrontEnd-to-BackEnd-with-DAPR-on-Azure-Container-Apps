@@ -1,8 +1,10 @@
 param location string = resourceGroup().location
+param baseName string = resourceGroup().name
+param acrname string = replace(toLower('${resourceGroup().name}acr'), '-','')
 
 // create the azure container registry
 resource acr 'Microsoft.ContainerRegistry/registries@2021-09-01' = {
-  name: replace(toLower('${resourceGroup().name}acr'), '-','')
+  name: acrname
   location: location
   sku: {
     name: 'Basic'
@@ -17,6 +19,7 @@ module env 'environment.bicep' = {
   name: 'containerAppEnvironment'
   params: {
     location: location
+    baseName: baseName
   }
 }
 

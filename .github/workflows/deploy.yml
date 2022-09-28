@@ -11,7 +11,7 @@ env:
   RESOURCE_GROUP_NAME: polaris-test
   ACR_NAME: polaristest
 
-  # specify your preferred region
+   # specify your preferred region
   REGION: eastus
 
   STORE_DOCKER: Store/Dockerfile
@@ -52,7 +52,11 @@ jobs:
         inlineScript: >
           echo "Creating resources"
 
-          az deployment group create --resource-group ${{ env.RESOURCE_GROUP_NAME }} --template-file '/github/workspace/Azure/main.bicep' --debug
+          az deployment group create \
+              --resource-group ${{ env.RESOURCE_GROUP_NAME }} \
+              --template-file '/github/workspace/Azure/main.bicep' \
+              --parameters acrname='${{ env.ACR_NAME }}' \
+              --debug
 
   build:
     runs-on: ubuntu-latest
